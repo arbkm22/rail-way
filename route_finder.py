@@ -374,11 +374,19 @@ def main():
         return
     
     print(f"\nSearching for routes from '{from_station}' to '{to_station}'...")
-    print(f"Maximum waiting time at intermediate stations: 4 hours")
-    print(f"Maximum number of train changes: 2")
+    max_waiting_hours = 4
+    max_hops = 3
+    max_changes = max(0, max_hops - 1)
+    print(f"Maximum waiting time at intermediate stations: {max_waiting_hours} hours")
+    print(f"Maximum number of train changes: {max_changes}")
     
     # Find routes
-    routes = finder.find_all_routes(from_station, to_station, max_waiting_hours=4, max_hops=3)
+    routes = finder.find_all_routes(
+        from_station,
+        to_station,
+        max_waiting_hours=max_waiting_hours,
+        max_hops=max_hops,
+    )
     
     if not routes:
         print(f"\nNo routes found from '{from_station}' to '{to_station}'.")
