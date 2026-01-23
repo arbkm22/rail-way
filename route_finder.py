@@ -197,12 +197,16 @@ class TrainRouteFinder:
                     departure = self._parse_time(train_info['departure'])
                     if departure is None:
                         continue
-                    
+
+                    # Avoid treating the same train as a new connection; staying on
+                    # the same train should not count as an extra change or waiting time.
+                    if path and train_info['train_no'] == path[-1]['train_no']:
+                        continue
+
                     # Check waiting time
                     waiting_time = self._time_difference(current_arrival, departure)
                     if waiting_time is None or waiting_time < 0 or waiting_time > max_waiting_minutes:
                         continue
-                    
                     # This train is a valid connection
                     timetable = train_info['timetable']
                     stop_idx = train_info['stop_index']
