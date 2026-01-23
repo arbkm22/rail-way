@@ -207,13 +207,19 @@ class TrainRouteFinder:
                     timetable = train_info['timetable']
                     stop_idx = train_info['stop_index']
                     
+                    # Track all stations visited so far in this path (including current)
+                    visited_stations = {current_station}
+                    for seg in path:
+                        visited_stations.add(seg['from_station'])
+                        visited_stations.add(seg['to_station'])
+                    
                     # Check all destinations reachable from this train
                     for i in range(stop_idx + 1, len(timetable)):
                         next_stop = timetable[i]
                         next_station = next_stop['station_name']
                         
                         # Avoid going back to already visited stations in this path
-                        if any(seg['to_station'] == next_station for seg in path):
+                        if next_station in visited_stations:
                             continue
                         
                         arrival = self._parse_time(next_stop['arrival_time'])
