@@ -154,9 +154,6 @@ def main():
     batch_size = 25  # Trains per batch for each thread
     save_interval = 100  # Save progress every N trains
     
-    # Create a thread-safe copy of processed train numbers for checking
-    processed_train_numbers_frozen = frozenset(processed_train_numbers)
-    
     try:
         # Split trains into batches
         batches = [trains_to_process[i:i + batch_size] for i in range(0, len(trains_to_process), batch_size)]
@@ -167,10 +164,10 @@ def main():
         # Process batches using ThreadPoolExecutor
         with ThreadPoolExecutor(max_workers=num_threads) as executor:
             # Submit batches to the executor
-            future_to_batch = {executor.submit(process_train_batch, batch, processed_train_numbers_frozen): batch for batch in batches}
+            future_to_batch_idx = {executor.submit(process_train_batch, batch, processed_train_numbers): idx for idx, batch in enumerate(batches)}
             
-            for future in as_completed(future_to_batch):
-                batch = future_to_batch[future]
+            for future in as_completed(future_to_batch_idx):
+                batch_idx = future_to_batch_idx[future]
                 try:
                     batch_results = future.result()
                     
@@ -187,7 +184,7 @@ def main():
                             last_save_count = processed_count
                 
                 except Exception as e:
-                    print(f"Error processing batch: {str(e)}")
+                    print(f"Error processing batch {batch_idx}: {str(e)}")
     
     except KeyboardInterrupt:
         print("\nInterrupted by user. Saving progress...")
