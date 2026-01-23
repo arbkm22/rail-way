@@ -3,7 +3,6 @@ Generate sample timetable data for testing the route-finding algorithm.
 This creates realistic timetable data for a subset of trains.
 """
 import json
-from datetime import datetime, timedelta
 
 def generate_sample_timetables():
     """
