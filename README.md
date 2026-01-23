@@ -21,7 +21,8 @@ rail-way/
 ├── generate_sample_timetables.py  # Generate sample data for testing
 ├── train_timetables.json          # Timetable data with station stops and timings
 ├── route_finder.py                # Main route-finding application
-├── main.py                        # Entry point
+├── example_usage.py               # Example usage scripts
+├── main.py                        # Main entry point (calls route_finder)
 └── README.md                      # This file
 ```
 
@@ -42,9 +43,11 @@ pip install selenium webdriver-manager pandas
 
 ### Finding Train Routes
 
-Run the route finder application:
+Run the route finder application (either of these commands works):
 
 ```bash
+python3 main.py
+# or
 python3 route_finder.py
 ```
 

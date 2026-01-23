@@ -76,7 +76,7 @@ def generate_sample_timetables():
             "fromStation": "Tatanagar Junction",
             "toStation": "Danapur Junction",
             "timetable": [
-                {"station_code": "TATA", "station_name": "Tatanagar Junction", "arrival_time": "Source", "departure_time": "05:30", "departure_time": "05:30", "distance_km": "0"},
+                {"station_code": "TATA", "station_name": "Tatanagar Junction", "arrival_time": "Source", "departure_time": "05:30", "distance_km": "0"},
                 {"station_code": "RNC", "station_name": "Ranchi Junction", "arrival_time": "07:45", "departure_time": "07:55", "distance_km": "140"},
                 {"station_code": "MURI", "station_name": "Muri Junction", "arrival_time": "09:20", "departure_time": "09:25", "distance_km": "218"},
                 {"station_code": "DHN", "station_name": "Dhanbad Junction", "arrival_time": "11:00", "departure_time": "11:10", "distance_km": "288"},

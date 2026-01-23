@@ -44,7 +44,7 @@ class TrainRouteFinder:
             hours = int(parts[0])
             minutes = int(parts[1])
             return hours * 60 + minutes
-        except:
+        except (ValueError, IndexError, AttributeError):
             return None
     
     def _time_difference(self, time1_minutes, time2_minutes):
