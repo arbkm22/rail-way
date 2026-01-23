@@ -82,7 +82,7 @@ def extract_train_timetable(driver, train_number, train_name):
 # Thread-safe lock for updating shared data
 timetables_lock = threading.Lock()
 
-def process_train_batch(trains_batch, all_timetables, processed_train_numbers):
+def process_train_batch(trains_batch, processed_train_numbers):
     """
     Process a batch of trains in a single thread with its own driver
     """
@@ -154,16 +154,20 @@ def main():
     batch_size = 25  # Trains per batch for each thread
     save_interval = 100  # Save progress every N trains
     
+    # Create a thread-safe copy of processed train numbers for checking
+    processed_train_numbers_frozen = frozenset(processed_train_numbers)
+    
     try:
         # Split trains into batches
         batches = [trains_to_process[i:i + batch_size] for i in range(0, len(trains_to_process), batch_size)]
         
         processed_count = len(all_timetables)
+        last_save_count = processed_count
         
         # Process batches using ThreadPoolExecutor
         with ThreadPoolExecutor(max_workers=num_threads) as executor:
             # Submit batches to the executor
-            future_to_batch = {executor.submit(process_train_batch, batch, all_timetables, processed_train_numbers): batch for batch in batches}
+            future_to_batch = {executor.submit(process_train_batch, batch, processed_train_numbers_frozen): batch for batch in batches}
             
             for future in as_completed(future_to_batch):
                 batch = future_to_batch[future]
@@ -176,10 +180,11 @@ def main():
                         processed_count += len(batch_results)
                         
                         # Save progress periodically
-                        if processed_count % save_interval < len(batch_results):
+                        if processed_count - last_save_count >= save_interval:
                             with open('train_timetables.json', 'w') as f:
                                 json.dump(all_timetables, f, indent=2)
                             print(f"Progress saved: {len(all_timetables)} trains processed")
+                            last_save_count = processed_count
                 
                 except Exception as e:
                     print(f"Error processing batch: {str(e)}")
