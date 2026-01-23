@@ -82,18 +82,21 @@ def main():
     
     # Process trains in batches
     batch_size = 100
-    start_index = 0
     
     # Check if we have partial data
     if os.path.exists('train_timetables.json'):
         with open('train_timetables.json', 'r') as f:
             all_timetables = json.load(f)
-        start_index = len(all_timetables)
-        print(f"Resuming from train {start_index}")
+        print(f"Resuming; {len(all_timetables)} timetables already loaded")
+    
+    processed_train_numbers = set(all_timetables.keys())
     
     try:
-        for i, train in enumerate(trains[start_index:], start=start_index):
+        for i, train in enumerate(trains):
             train_no = train['trainNo']
+            # Skip trains that have already been processed
+            if str(train_no) in processed_train_numbers:
+                continue
             print(f"Processing train {i+1}/{len(trains)}: {train_no} - {train['trainName']}")
             
             timetable = extract_train_timetable(driver, train_no)
