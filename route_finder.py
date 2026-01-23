@@ -163,14 +163,10 @@ class TrainRouteFinder:
                         'duration_minutes': journey_time
                     }
                     
-                    # If we reached destination
+                    # If we reached destination on this very first segment, this is a
+                    # direct route and will be handled by find_direct_trains(), so skip.
                     if next_station == to_station:
-                        routes.append({
-                            'route': [path_segment],
-                            'total_duration': journey_time,
-                            'total_changes': 0,
-                            'route_type': 'direct'
-                        })
+                        continue
                     elif len([path_segment]) < max_hops:
                         # Add to queue for further exploration
                         queue.append((next_station, arrival, [path_segment], journey_time))
