@@ -119,7 +119,8 @@ class TrainRouteFinder:
             from_station: Starting station
             to_station: Destination station
             max_waiting_hours: Maximum waiting time at intermediate stations
-            max_hops: Maximum number of train changes allowed
+            max_hops: Maximum number of train segments (trains) in the route, including the first train
+                (i.e. number of train changes is max_hops - 1)
         
         Returns:
             List of possible routes with connections
