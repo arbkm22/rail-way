@@ -1,29 +1,74 @@
 # Indian Railways Route Finder
 
-A Python-based application to find train routes between stations in India, including multi-hop connections with intelligent timing constraints.
+A modern train route finder application for Indian Railways with Next.js frontend and Flask REST API backend.
+
+## 🚀 Quick Start
+
+**New Modern Architecture (Recommended)**
+
+1. Generate sample data:
+   ```bash
+   python3 generate_sample_timetables.py
+   ```
+
+2. Start Flask API:
+   ```bash
+   pip install -r requirements.txt
+   python3 api.py
+   ```
+
+3. Start Next.js frontend:
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+4. Open http://localhost:3000 in your browser
+
+📖 **[See full documentation in ARCHITECTURE.md](ARCHITECTURE.md)**
+
+---
 
 ## Features
 
+- **Modern Web Interface**: Next.js frontend with interactive Leaflet maps
+- **REST API**: Clean Flask API with GeoJSON support
 - **Direct Route Finding**: Find all direct trains between two stations
 - **Multi-hop Route Search**: Intelligently find routes requiring train changes
 - **Timing Constraints**: Ensures waiting time at intermediate stations doesn't exceed 4 hours
-- **Timetable Extraction**: Scripts to extract train schedules from prokerala.com
-- **Interactive CLI**: Simple command-line interface to search for routes
+- **Interactive Maps**: Visualize routes on OpenStreetMap with color-coded markers
+- **Mobile Responsive**: Works on all devices
+- **No Paid Services**: Uses free OpenStreetMap tiles
+
+## Architecture
+
+### Modern Stack (Current)
+- **Frontend**: Next.js 14 (App Router) + TypeScript + Tailwind CSS
+- **Map**: Leaflet.js with OpenStreetMap tiles
+- **Backend**: Flask REST API with CORS
+- **Data Format**: GeoJSON for routes and stations
+
+### Legacy (Deprecated)
+- Old Flask app with Jinja templates: `app.py` (still available for reference)
 
 ## Project Structure
 
 ```
 rail-way/
-├── prokerala.py                    # Original script to extract train list
-├── all_trains.json                 # List of all trains in India
-├── all_trains.csv                  # CSV version of train list
-├── extract_timetables.py           # Script to extract detailed timetables
-├── generate_sample_timetables.py  # Generate sample data for testing
-├── train_timetables.json          # Timetable data with station stops and timings
-├── route_finder.py                # Main route-finding application
-├── example_usage.py               # Example usage scripts
-├── main.py                        # Main entry point (calls route_finder)
-└── README.md                      # This file
+├── api.py                          # Flask REST API (NEW)
+├── app.py                          # Legacy Flask app with templates
+├── route_finder.py                # Route finding algorithm
+├── train_timetables.json          # Train schedule data
+├── requirements.txt               # Python dependencies
+├── frontend/                      # Next.js application (NEW)
+│   ├── app/                      # App Router
+│   ├── components/               # React components
+│   ├── lib/                      # API client
+│   └── package.json
+├── templates/                     # Legacy HTML templates
+├── static/                        # Legacy static files
+└── ARCHITECTURE.md               # Full documentation (NEW)
 ```
 
 ## Installation
@@ -34,20 +79,44 @@ git clone https://github.com/arbkm22/rail-way.git
 cd rail-way
 ```
 
-2. Install required dependencies:
+2. Install Python dependencies:
 ```bash
-pip install selenium webdriver-manager pandas
+pip install -r requirements.txt
+```
+
+3. Install Node.js dependencies (for modern frontend):
+```bash
+cd frontend
+npm install
+cd ..
 ```
 
 ## Usage
 
-### Web Application (Recommended)
+### Modern Web Application (Recommended)
 
-Start the Flask web server:
+See [ARCHITECTURE.md](ARCHITECTURE.md) for complete instructions.
+
+**Quick start:**
+```bash
+# Terminal 1: Start API
+python3 api.py
+
+# Terminal 2: Start Frontend  
+cd frontend && npm run dev
+```
+
+Then open http://localhost:3000
+
+### Legacy Web Application
+
+Start the Flask web server with Jinja templates:
 
 ```bash
 python3 app.py
 ```
+
+Then open http://localhost:5000
 
 Then open your browser and navigate to:
 ```
