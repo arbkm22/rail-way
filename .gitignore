@@ -47,3 +47,16 @@ Thumbs.db
 instance/
 .webassets-cache
 .flask_session
+
+# Next.js / Node.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/.turbo
+frontend/dist/
+node_modules/
+
