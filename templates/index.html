@@ -3,207 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indian Railways Route Finder</title>
+    <title>Indian Railways Route Finder - Smart Journey Planner</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/icons.css') }}">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🚂 Indian Railways Route Finder</h1>
-            <p class="subtitle">Find the best train routes between any two stations</p>
-        </header>
-
-        {% if error %}
-        <div class="error-message">
-            <strong>Error:</strong> {{ error }}
-            <p>Please run: <code>python3 generate_sample_timetables.py</code></p>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-train"></i>
+                <span>Indian Railways Route Finder</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active"><i class="fas fa-search"></i> Find Routes</a>
+                <a href="#" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+            </div>
         </div>
-        {% else %}
-        <main>
-            <div class="search-form">
-                <div class="form-group">
-                    <label for="from_station">From Station:</label>
-                    <select id="from_station" name="from_station" required>
-                        <option value="">Select starting station</option>
-                        {% for station in stations %}
-                        <option value="{{ station }}">{{ station }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+    </nav>
 
-                <div class="form-group">
-                    <label for="to_station">To Station:</label>
-                    <select id="to_station" name="to_station" required>
-                        <option value="">Select destination station</option>
-                        {% for station in stations %}
-                        <option value="{{ station }}">{{ station }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="advanced-options">
-                    <h3>Advanced Options</h3>
-                    <div class="options-grid">
-                        <div class="form-group">
-                            <label for="max_waiting_hours">Max Waiting Time (hours):</label>
-                            <input type="number" id="max_waiting_hours" name="max_waiting_hours" value="4" min="1" max="12">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="max_hops">Max Train Changes:</label>
-                            <input type="number" id="max_hops" name="max_hops" value="3" min="1" max="5">
-                        </div>
-                    </div>
-                </div>
-
-                <button id="search-btn" class="search-button">Find Routes</button>
+    {% if error %}
+    <div class="error-banner">
+        <div class="error-content">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <strong>Error:</strong> {{ error }}
+                <p>Please run: <code>python3 generate_sample_timetables.py</code></p>
             </div>
-
-            <div id="loading" class="loading" style="display: none;">
-                <div class="spinner"></div>
-                <p>Searching for routes...</p>
-            </div>
-
-            <div id="results" class="results"></div>
-        </main>
-        {% endif %}
-
-        <footer>
-            <p>Data sourced from ProKerala | Built with Python & Flask</p>
-        </footer>
+        </div>
     </div>
+    {% else %}
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Plan Your Perfect Journey</h1>
+            <p class="hero-subtitle">Discover the fastest train routes across India with real-time connections</p>
+        </div>
+    </section>
 
-    <script>
-        document.getElementById('search-btn').addEventListener('click', async function() {
-            const fromStation = document.getElementById('from_station').value;
-            const toStation = document.getElementById('to_station').value;
-            const maxWaitingHours = document.getElementById('max_waiting_hours').value;
-            const maxHops = document.getElementById('max_hops').value;
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-wrapper">
+            <!-- Search Panel -->
+            <aside class="search-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-route"></i> Route Planner</h2>
+                </div>
 
-            if (!fromStation || !toStation) {
-                alert('Please select both stations');
-                return;
-            }
-
-            if (fromStation === toStation) {
-                alert('Source and destination cannot be the same');
-                return;
-            }
-
-            // Show loading
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('results').innerHTML = '';
-
-            try {
-                const response = await fetch('/find_routes', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        from_station: fromStation,
-                        to_station: toStation,
-                        max_waiting_hours: maxWaitingHours,
-                        max_hops: maxHops
-                    })
-                });
-
-                const data = await response.json();
-
-                // Hide loading
-                document.getElementById('loading').style.display = 'none';
-
-                if (data.error) {
-                    document.getElementById('results').innerHTML = `
-                        <div class="error-message">
-                            <strong>Error:</strong> ${data.error}
+                <form id="route-form" class="search-form">
+                    <!-- Station Selection -->
+                    <div class="station-selectors">
+                        <div class="form-group">
+                            <label for="from_station">
+                                <i class="fas fa-circle-dot"></i> From
+                            </label>
+                            <div class="select-wrapper">
+                                <select id="from_station" name="from_station" required>
+                                    <option value="">Choose departure station</option>
+                                    {% for station in stations %}
+                                    <option value="{{ station }}">{{ station }}</option>
+                                    {% endfor %}
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
                         </div>
-                    `;
-                    return;
-                }
 
-                if (data.routes.length === 0) {
-                    document.getElementById('results').innerHTML = `
-                        <div class="no-results">
-                            <h2>No Routes Found</h2>
-                            <p>${data.message}</p>
+                        <button type="button" class="swap-btn" id="swap-stations" title="Swap stations">
+                            <i class="fas fa-arrow-right-arrow-left"></i>
+                        </button>
+
+                        <div class="form-group">
+                            <label for="to_station">
+                                <i class="fas fa-location-dot"></i> To
+                            </label>
+                            <div class="select-wrapper">
+                                <select id="to_station" name="to_station" required>
+                                    <option value="">Choose destination station</option>
+                                    {% for station in stations %}
+                                    <option value="{{ station }}">{{ station }}</option>
+                                    {% endfor %}
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
                         </div>
-                    `;
-                    return;
-                }
-
-                // Display results
-                let html = `
-                    <div class="results-header">
-                        <h2>Routes from ${data.from_station} to ${data.to_station}</h2>
-                        <p>Found ${data.routes.length} route(s)</p>
                     </div>
-                `;
 
-                data.routes.forEach((route, index) => {
-                    html += `
-                        <div class="route-card">
-                            <div class="route-header">
-                                <h3>Option ${index + 1}</h3>
-                                <div class="route-info">
-                                    <span class="badge ${route.route_type === 'DIRECT' ? 'badge-success' : 'badge-warning'}">
-                                        ${route.route_type}
-                                    </span>
-                                    <span class="duration">⏱️ ${route.total_duration}</span>
-                                    <span class="changes">🔄 ${route.num_changes} change(s)</span>
+                    <!-- Advanced Options -->
+                    <div class="advanced-section">
+                        <button type="button" class="advanced-toggle" id="advanced-toggle">
+                            <span><i class="fas fa-sliders"></i> Advanced Options</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        
+                        <div class="advanced-content" id="advanced-content">
+                            <div class="options-grid">
+                                <div class="form-group">
+                                    <label for="max_waiting_hours">
+                                        <i class="fas fa-clock"></i> Max Waiting (hours)
+                                    </label>
+                                    <input type="number" id="max_waiting_hours" name="max_waiting_hours" 
+                                           value="4" min="1" max="12" class="number-input">
                                 </div>
-                            </div>
-                            <div class="route-segments">
-                    `;
 
-                    route.segments.forEach((segment, segIndex) => {
-                        html += `
-                            <div class="segment">
-                                <div class="segment-header">
-                                    <strong>Segment ${segIndex + 1}:</strong> ${segment.train_name} (${segment.train_no})
+                                <div class="form-group">
+                                    <label for="max_hops">
+                                        <i class="fas fa-exchange-alt"></i> Max Changes
+                                    </label>
+                                    <input type="number" id="max_hops" name="max_hops" 
+                                           value="3" min="1" max="5" class="number-input">
                                 </div>
-                                <div class="segment-details">
-                                    <div class="station-time">
-                                        <div class="station">${segment.from_station}</div>
-                                        <div class="time">Departure: ${segment.departure}</div>
-                                    </div>
-                                    <div class="journey-line">
-                                        <div class="duration-badge">${segment.duration}</div>
-                                    </div>
-                                    <div class="station-time">
-                                        <div class="station">${segment.to_station}</div>
-                                        <div class="time">Arrival: ${segment.arrival}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-
-                        if (segment.waiting_time) {
-                            html += `
-                                <div class="waiting-time">
-                                    ⏳ Waiting time at ${segment.to_station}: ${segment.waiting_time}
-                                </div>
-                            `;
-                        }
-                    });
-
-                    html += `
                             </div>
                         </div>
-                    `;
-                });
-
-                document.getElementById('results').innerHTML = html;
-
-            } catch (error) {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('results').innerHTML = `
-                    <div class="error-message">
-                        <strong>Error:</strong> ${error.message}
                     </div>
-                `;
-            }
-        });
-    </script>
+
+                    <!-- Search Button -->
+                    <button type="submit" id="search-btn" class="search-button">
+                        <i class="fas fa-magnifying-glass"></i>
+                        <span>Find Routes</span>
+                    </button>
+                </form>
+
+                <!-- Loading State -->
+                <div id="loading" class="loading-state" style="display: none;">
+                    <div class="spinner-container">
+                        <div class="spinner"></div>
+                    </div>
+                    <p>Finding optimal routes...</p>
+                </div>
+
+                <!-- Results Summary -->
+                <div id="results-summary" class="results-summary" style="display: none;"></div>
+
+                <!-- Results List -->
+                <div id="results" class="results-list"></div>
+            </aside>
+
+            <!-- Map Container -->
+            <div class="map-container">
+                <div class="map-header">
+                    <h3><i class="fas fa-map-marked-alt"></i> Route Visualization</h3>
+                    <div class="map-controls">
+                        <button class="map-btn" id="reset-map" title="Reset view">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="map" class="map"></div>
+                <div class="map-legend" id="map-legend" style="display: none;">
+                    <h4>Legend</h4>
+                    <div class="legend-item">
+                        <span class="legend-marker departure"></span>
+                        <span>Departure Station</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-marker destination"></span>
+                        <span>Destination</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-marker transfer"></span>
+                        <span>Transfer Point</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Indian Railways Route Finder</h4>
+                <p>Smart journey planning for train travelers</p>
+            </div>
+            <div class="footer-section">
+                <p>Data sourced from ProKerala</p>
+                <p>Built with <i class="fas fa-heart"></i> using Python & Flask</p>
+            </div>
+        </div>
+    </footer>
+    {% endif %}
+
+    <script src="{{ url_for('static', filename='js/leaflet.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/stations.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

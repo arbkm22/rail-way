@@ -1,0 +1,29 @@
+/* Simple icon replacements using Unicode symbols */
+.fa, .fas {
+    font-style: normal;
+    display: inline-block;
+}
+
+/* Icons using Unicode */
+.fa-train::before { content: "🚂 "; }
+.fa-search::before { content: "🔍 "; }
+.fa-info-circle::before { content: "ℹ️ "; }
+.fa-route::before { content: "🗺️ "; }
+.fa-circle-dot::before { content: "📍 "; }
+.fa-location-dot::before { content: "📌 "; }
+.fa-chevron-down::before { content: "▼"; }
+.fa-arrow-right-arrow-left::before { content: "⇄"; }
+.fa-sliders::before { content: "⚙️ "; }
+.fa-clock::before { content: "⏰ "; }
+.fa-exchange-alt::before { content: "🔄 "; }
+.fa-magnifying-glass::before { content: "🔍 "; }
+.fa-map-marked-alt::before { content: "🗺️ "; }
+.fa-expand::before { content: "⤢"; }
+.fa-heart::before { content: "❤️"; }
+.fa-exclamation-triangle::before { content: "⚠️ "; }
+.fa-check-circle::before { content: "✓ "; }
+.fa-arrow-right::before { content: "→"; }
+.fa-code-branch::before { content: "⑂"; }
+.fa-arrow-down::before { content: "↓"; }
+.fa-hourglass-half::before { content: "⏳ "; }
+.fa-exclamation-circle::before { content: "❗ "; }
