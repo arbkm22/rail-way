@@ -19,10 +19,12 @@ def create_railway_map():
     # Step 1: Initialize the map centered on India
     # Coordinates: 20.5937, 78.9629 (center of India)
     # Zoom level: 5 (to show entire country)
+    # Using CartoDB Voyager tiles for geographically accurate, detailed map
     india_map = folium.Map(
         location=[20.5937, 78.9629],
         zoom_start=5,
-        tiles='OpenStreetMap'
+        tiles='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        attr='© OpenStreetMap contributors, © CARTO'
     )
     
     # Step 2: Define the dataset with exact coordinates for railway stations

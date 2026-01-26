@@ -6,14 +6,16 @@ let currentRoute = null;
 
 // Initialize map
 function initMap() {
-    // Create map centered on India
+    // Create map centered on India with better initial zoom for geographic detail
     map = L.map('map').setView([20.5937, 78.9629], 5);
 
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
-        maxZoom: 18,
-        minZoom: 4
+    // Add detailed tile layer (CartoDB Voyager - similar to Google Maps)
+    // This provides a geographically accurate, detailed map with cities, terrain, and roads
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap contributors, © CARTO',
+        maxZoom: 19,
+        minZoom: 4,
+        subdomains: 'abcd'
     }).addTo(map);
 
     // Add India boundary marker

@@ -51,9 +51,9 @@ def test_map_generation():
         with open(tmp_filename, 'r') as f:
             content = f.read()
         
-        # Check for required elements
-        assert 'openstreetmap.org' in content, "Should use OpenStreetMap tiles"
-        print("   ✓ Uses OpenStreetMap tiles")
+        # Check for required elements - now using CartoDB Voyager tiles for better geographic detail
+        assert 'cartocdn.com' in content or 'carto' in content.lower(), "Should use CartoDB tiles for geographic accuracy"
+        print("   ✓ Uses CartoDB Voyager tiles (geographically accurate)")
         
         assert 'New Delhi' in content, "Should include New Delhi station"
         assert 'Chhatrapati' in content, "Should include Mumbai station"
