@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_8cc2b27eab1061d0fdfe4dab9ebd03a4 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_8cc2b27eab1061d0fdfe4dab9ebd03a4" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_8cc2b27eab1061d0fdfe4dab9ebd03a4 = L.map(
+                "map_8cc2b27eab1061d0fdfe4dab9ebd03a4",
+                {
+                    center: [20.5937, 78.9629],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 5,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_905cd949409e9abf0e3ff74b6a77d1cd = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_905cd949409e9abf0e3ff74b6a77d1cd.addTo(map_8cc2b27eab1061d0fdfe4dab9ebd03a4);
+        
+    
+            var marker_a714f91373fe34501249d9d85aa63a31 = L.marker(
+                [28.6414, 77.2195],
+                {
+}
+            ).addTo(map_8cc2b27eab1061d0fdfe4dab9ebd03a4);
+        
+    
+        var popup_a160d93d8ea0ebf805745d36ab8651c3 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_cb4263b68f904d0088405b58ce6311db = $(`<div id="html_cb4263b68f904d0088405b58ce6311db" style="width: 100.0%; height: 100.0%;">New Delhi (NDLS)</div>`)[0];
+                popup_a160d93d8ea0ebf805745d36ab8651c3.setContent(html_cb4263b68f904d0088405b58ce6311db);
+            
+        
+
+        marker_a714f91373fe34501249d9d85aa63a31.bindPopup(popup_a160d93d8ea0ebf805745d36ab8651c3)
+        ;
+
+        
+    
+    
+            marker_a714f91373fe34501249d9d85aa63a31.bindTooltip(
+                `<div>
+                     Station
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_d9f60375319065b6bf2b92bccab26421 = L.marker(
+                [18.94, 72.8355],
+                {
+}
+            ).addTo(map_8cc2b27eab1061d0fdfe4dab9ebd03a4);
+        
+    
+        var popup_869e57f65bfd70b2371411cc0aa72260 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_a2f6af305ea151cbc261196a7dd64b55 = $(`<div id="html_a2f6af305ea151cbc261196a7dd64b55" style="width: 100.0%; height: 100.0%;">Chhatrapati Shivaji Maharaj Terminus (Mumbai)</div>`)[0];
+                popup_869e57f65bfd70b2371411cc0aa72260.setContent(html_a2f6af305ea151cbc261196a7dd64b55);
+            
+        
+
+        marker_d9f60375319065b6bf2b92bccab26421.bindPopup(popup_869e57f65bfd70b2371411cc0aa72260)
+        ;
+
+        
+    
+    
+            marker_d9f60375319065b6bf2b92bccab26421.bindTooltip(
+                `<div>
+                     Station
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_6c05d43e6925aca1e12d34780a7240d4 = L.marker(
+                [22.5835, 88.3426],
+                {
+}
+            ).addTo(map_8cc2b27eab1061d0fdfe4dab9ebd03a4);
+        
+    
+        var popup_7b088bc9f341436be84fc52d3010ddcc = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8fd37e5fa9c8a1d0bd37c9b8d482c3be = $(`<div id="html_8fd37e5fa9c8a1d0bd37c9b8d482c3be" style="width: 100.0%; height: 100.0%;">Howrah Junction (Kolkata)</div>`)[0];
+                popup_7b088bc9f341436be84fc52d3010ddcc.setContent(html_8fd37e5fa9c8a1d0bd37c9b8d482c3be);
+            
+        
+
+        marker_6c05d43e6925aca1e12d34780a7240d4.bindPopup(popup_7b088bc9f341436be84fc52d3010ddcc)
+        ;
+
+        
+    
+    
+            marker_6c05d43e6925aca1e12d34780a7240d4.bindTooltip(
+                `<div>
+                     Station
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_c7cf201c73d888a1411f2a0460c1fc4a = L.marker(
+                [13.0827, 80.2753],
+                {
+}
+            ).addTo(map_8cc2b27eab1061d0fdfe4dab9ebd03a4);
+        
+    
+        var popup_907b9d72efa8a6feda0e9ae1fca93680 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1d108a1fb209a5c007f238b37c474fb2 = $(`<div id="html_1d108a1fb209a5c007f238b37c474fb2" style="width: 100.0%; height: 100.0%;">MGR Chennai Central</div>`)[0];
+                popup_907b9d72efa8a6feda0e9ae1fca93680.setContent(html_1d108a1fb209a5c007f238b37c474fb2);
+            
+        
+
+        marker_c7cf201c73d888a1411f2a0460c1fc4a.bindPopup(popup_907b9d72efa8a6feda0e9ae1fca93680)
+        ;
+
+        
+    
+    
+            marker_c7cf201c73d888a1411f2a0460c1fc4a.bindTooltip(
+                `<div>
+                     Station
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_b82e174e56d5e6adf25a1aaa2bdc37e1 = L.marker(
+                [12.9776, 77.5718],
+                {
+}
+            ).addTo(map_8cc2b27eab1061d0fdfe4dab9ebd03a4);
+        
+    
+        var popup_342088842169faabf879218ff13a45a6 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f3e140afbedd82fb8c73f40c92e41fec = $(`<div id="html_f3e140afbedd82fb8c73f40c92e41fec" style="width: 100.0%; height: 100.0%;">KSR Bengaluru City Junction</div>`)[0];
+                popup_342088842169faabf879218ff13a45a6.setContent(html_f3e140afbedd82fb8c73f40c92e41fec);
+            
+        
+
+        marker_b82e174e56d5e6adf25a1aaa2bdc37e1.bindPopup(popup_342088842169faabf879218ff13a45a6)
+        ;
+
+        
+    
+    
+            marker_b82e174e56d5e6adf25a1aaa2bdc37e1.bindTooltip(
+                `<div>
+                     Station
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>
