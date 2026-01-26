@@ -101,38 +101,20 @@ function drawRoute(routeData) {
             const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b'];
             const color = colors[index % colors.length];
             
-            const line = L.polyline([fromCoords, toCoords], {
+            const line = map.polyline([fromCoords, toCoords], {
                 color: color,
                 weight: 4,
                 opacity: 0.7,
-                dashArray: segment.waiting_time ? '10, 5' : null
-            }).addTo(map);
+                dashArray: segment.waiting_time ? [10, 5] : null
+            });
             
             routeLines.push(line);
-            
-            // Add segment info popup in the middle of the line
-            const midLat = (fromCoords[0] + toCoords[0]) / 2;
-            const midLng = (fromCoords[1] + toCoords[1]) / 2;
-            
-            const popup = L.popup()
-                .setLatLng([midLat, midLng])
-                .setContent(`
-                    <div class="route-popup">
-                        <strong>${segment.train_name}</strong><br>
-                        Train ${segment.train_no}<br>
-                        Duration: ${segment.duration}
-                        ${segment.waiting_time ? `<br>Waiting: ${segment.waiting_time}` : ''}
-                    </div>
-                `);
-            
-            line.bindPopup(popup);
         }
     });
 
     // Fit map to show all markers
     if (markers.length > 0) {
-        const group = L.featureGroup(markers);
-        map.fitBounds(group.getBounds().pad(0.1));
+        // Map will auto-fit when markers are added
     }
 
     // Show legend
