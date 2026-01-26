@@ -12,12 +12,12 @@ const L = {
         canvas.style.height = '100%';
         container.appendChild(canvas);
         
-        // India bounds (approximate)
+        // India bounds (actual geographic bounds)
         const bounds = {
-            minLat: 8,
-            maxLat: 35,
+            minLat: 6.5,
+            maxLat: 37,
             minLng: 68,
-            maxLng: 97
+            maxLng: 98
         };
         
         let markers = [];
@@ -31,19 +31,42 @@ const L = {
             return { x, y };
         }
         
-        // Draw India map background
+        // Draw India map background with accurate outline
         function drawIndiaOutline() {
-            // Simplified India shape
             ctx.fillStyle = '#e0f2fe';
-            ctx.strokeStyle = '#0284c7';
+            ctx.strokeStyle = '#0369a1';
             ctx.lineWidth = 2;
             
-            // Draw a simplified polygon representing India
+            // More accurate India shape coordinates (simplified but recognizable)
             const indiaShape = [
-                [35, 75], [32, 78], [30, 88], [28, 92], [25, 88],
-                [22, 88], [20, 85], [18, 77], [16, 75], [12, 77],
-                [10, 77], [8, 75], [8, 72], [10, 70], [15, 68],
-                [20, 70], [24, 70], [28, 72], [30, 70], [33, 72], [35, 75]
+                // Kashmir and North
+                [35.5, 74], [35, 75], [34.5, 76], [34, 77], [33.5, 78],
+                [33, 78.5], [32.5, 79], [32, 79.5], [31.5, 80],
+                // Northeast border
+                [30.5, 81], [30, 82], [29, 84], [28, 86], [27.5, 88],
+                [27, 89], [26.5, 90], [26, 91], [25.5, 92],
+                // Northeast tip (Arunachal)
+                [28, 94], [27.5, 95.5], [27, 96.5], [26.5, 97],
+                // Down to Myanmar border
+                [26, 97], [25, 96.5], [24, 95], [23, 93.5], [22, 92.5],
+                // Bangladesh border and east coast
+                [21.5, 91.5], [21, 90], [20.5, 88.5], [20, 87.5],
+                // Bay of Bengal coast
+                [19, 85], [18, 84], [17, 83], [16, 82.5], [15, 81.5],
+                [14, 81], [13, 80.5], [12, 80.2], [11, 80],
+                // South tip
+                [10, 79.5], [9, 78.5], [8.5, 78], [8, 77.5],
+                // West coast going up
+                [8, 76.5], [9, 76], [10, 75.5], [11, 75.5], [12, 75],
+                [13, 74.5], [14, 74.5], [15, 74], [16, 73.5], [17, 73],
+                [18, 73], [19, 73], [20, 72.5], [21, 72], [22, 71.5],
+                [23, 70.5], [24, 70], [25, 70], [26, 70], [27, 70],
+                // Gujarat coast
+                [22, 69], [21.5, 68.5], [21, 68], [22, 68.5], [23, 68.5],
+                // Back to Rajasthan and up to Kashmir
+                [24, 69], [25, 70], [26, 70.5], [27, 71], [28, 71.5],
+                [29, 72], [30, 73], [31, 74], [32, 74.5], [33, 74.5],
+                [34, 74.5], [35.5, 74]
             ];
             
             ctx.beginPath();
@@ -55,6 +78,24 @@ const L = {
             ctx.closePath();
             ctx.fill();
             ctx.stroke();
+            
+            // Add some major cities as reference points (light gray dots)
+            const majorCities = [
+                [28.7, 77.2],   // Delhi
+                [19.08, 72.88], // Mumbai
+                [13.08, 80.27], // Chennai
+                [22.57, 88.36], // Kolkata
+                [12.97, 77.59], // Bangalore
+                [17.38, 78.48]  // Hyderabad
+            ];
+            
+            ctx.fillStyle = '#cbd5e1';
+            majorCities.forEach(city => {
+                const pos = project(city[0], city[1]);
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            });
         }
         
         // Draw the map
@@ -62,27 +103,43 @@ const L = {
             // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Draw background
-            ctx.fillStyle = '#f0f9ff';
+            // Draw ocean/background
+            ctx.fillStyle = '#dbeafe';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             // Draw India outline
             drawIndiaOutline();
             
-            // Draw grid
-            ctx.strokeStyle = '#bae6fd';
-            ctx.lineWidth = 1;
-            ctx.setLineDash([5, 5]);
-            for (let i = 1; i < 10; i++) {
-                const x = (canvas.width / 10) * i;
-                const y = (canvas.height / 10) * i;
+            // Draw subtle latitude/longitude reference lines
+            ctx.strokeStyle = 'rgba(186, 230, 253, 0.5)';
+            ctx.lineWidth = 0.5;
+            ctx.setLineDash([3, 3]);
+            
+            // Draw latitude lines every 5 degrees
+            for (let lat = 10; lat <= 35; lat += 5) {
+                const points = [];
+                for (let lng = bounds.minLng; lng <= bounds.maxLng; lng += 0.5) {
+                    points.push(project(lat, lng));
+                }
                 ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, canvas.height);
+                points.forEach((p, i) => {
+                    if (i === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                });
                 ctx.stroke();
+            }
+            
+            // Draw longitude lines every 5 degrees
+            for (let lng = 70; lng <= 95; lng += 5) {
+                const points = [];
+                for (let lat = bounds.minLat; lat <= bounds.maxLat; lat += 0.5) {
+                    points.push(project(lat, lng));
+                }
                 ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(canvas.width, y);
+                points.forEach((p, i) => {
+                    if (i === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                });
                 ctx.stroke();
             }
             ctx.setLineDash([]);

@@ -43,24 +43,12 @@ function addStationMarker(stationName, type = 'station') {
         'station': '#6366f1'
     };
 
-    const iconHtml = type === 'departure' 
-        ? '<i class="fas fa-circle-dot"></i>'
-        : type === 'destination'
-        ? '<i class="fas fa-location-dot"></i>'
-        : type === 'transfer'
-        ? '<i class="fas fa-exchange-alt"></i>'
-        : '<i class="fas fa-circle"></i>';
-
-    const icon = L.divIcon({
-        className: 'custom-marker',
-        html: `<div class="marker-pin marker-${type}" style="background-color: ${iconColors[type]}">${iconHtml}</div>`,
-        iconSize: [40, 40],
-        iconAnchor: [20, 40]
-    });
-
-    const marker = L.marker(coords, { icon: icon })
-        .bindPopup(`<strong>${stationName}</strong><br>${type.charAt(0).toUpperCase() + type.slice(1)}`)
-        .addTo(map);
+    const marker = map.marker(coords, { 
+        icon: { color: iconColors[type] },
+        label: stationName
+    })
+    .bindPopup(`<strong>${stationName}</strong><br>${type.charAt(0).toUpperCase() + type.slice(1)}`)
+    .addTo(map);
 
     markers.push(marker);
     return marker;
