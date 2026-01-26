@@ -41,7 +41,26 @@ pip install selenium webdriver-manager pandas
 
 ## Usage
 
-### Finding Train Routes
+### Web Application (Recommended)
+
+Start the Flask web server:
+
+```bash
+python3 app.py
+```
+
+Then open your browser and navigate to:
+```
+http://localhost:5000
+```
+
+The web interface provides:
+- Easy-to-use dropdown menus for station selection
+- Advanced options for customizing search parameters
+- Beautiful visual display of route results
+- Support for both direct and multi-hop routes
+
+### Command-Line Interface
 
 Run the route finder application (either of these commands works):
 
@@ -51,7 +70,7 @@ python3 main.py
 python3 route_finder.py
 ```
 
-The application will:
+The CLI application will:
 1. Display a list of available stations
 2. Ask for your starting station (enter name or number)
 3. Ask for your destination station (enter name or number)
@@ -224,10 +243,10 @@ Total Time: ~20h with 3h 30m waiting at Nagpur
 
 ## Future Enhancements
 
+- [x] Web-based UI
 - [ ] Extract complete timetable data for all 7000+ trains
 - [ ] Add train running days (Mon-Sun schedule)
 - [ ] Include fare calculation
-- [ ] Web-based UI
 - [ ] Real-time train status integration
 - [ ] Platform information
 - [ ] Coach composition details
