@@ -209,16 +209,18 @@ Segment 1:
   Duration: 9h 0m
 ```
 
-### Extracting Timetable Data
+### Python Utility Scripts (Optional)
 
-#### Option 1: Use Sample Data (for testing)
+The repository includes some Python utility scripts that can be used for data extraction and testing:
 
-Generate sample timetable data:
-```bash
-python3 generate_sample_timetables.py
-```
+- `generate_sample_timetables.py` - Generate sample timetable data for testing
+- `extract_timetables.py` - Extract real timetable data from websites
+- `visualize_railway_map.py` - Create static map visualizations
+- `test_*.py` - Test scripts for the Python code
 
-This creates `train_timetables.json` with realistic sample data for testing the route finder.
+> **Note**: These scripts are optional and not required to run the main web application. The application comes with pre-generated timetable data.
+
+This creates `train_timetables.json` with realistic sample data for testing the route finder. The data is already included in `frontend/public/train_timetables.json`.
 
 #### Option 2: Extract Real Data from Website
 

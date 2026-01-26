@@ -6,6 +6,8 @@ This directory contains the legacy Flask-based backend that has been replaced by
 
 - `api.py` - Flask REST API server (deprecated)
 - `app.py` - Flask web application with Jinja templates (deprecated)
+- `route_finder.py` - Python route finding algorithm (deprecated - now in TypeScript)
+- `main.py` - CLI entry point for route_finder.py (deprecated)
 - `requirements.txt` - Python dependencies (deprecated)
 - `templates/` - HTML templates for Flask app (deprecated)
 - `static/` - Static assets for Flask app (deprecated)
