@@ -43,6 +43,9 @@ Thumbs.db
 /tmp/
 *.tmp
 
+# Generated map files
+india_railways.html
+
 # Flask
 instance/
 .webassets-cache
