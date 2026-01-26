@@ -18,8 +18,14 @@
 
 3. **Start the Web Server**
    ```bash
+   # For development (with debug mode)
+   FLASK_DEBUG=true python3 app.py
+   
+   # For production (without debug mode - recommended)
    python3 app.py
    ```
+   
+   **Security Note**: Debug mode should never be enabled in production as it can expose sensitive information and allow arbitrary code execution.
 
 4. **Access the Application**
    

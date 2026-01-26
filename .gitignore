@@ -42,3 +42,8 @@ Thumbs.db
 # Temporary files
 /tmp/
 *.tmp
+
+# Flask
+instance/
+.webassets-cache
+.flask_session
