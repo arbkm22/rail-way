@@ -1,74 +1,72 @@
 # Indian Railways Route Finder
 
-A modern train route finder application for Indian Railways with Next.js frontend and Flask REST API backend.
+A modern train route finder application for Indian Railways built with Next.js and TypeScript - **no Python backend required!**
 
 ## 🚀 Quick Start
 
-**New Modern Architecture (Recommended)**
+**Simple Single-Command Start**
 
-1. Generate sample data:
-   ```bash
-   python3 generate_sample_timetables.py
-   ```
-
-2. Start Flask API:
-   ```bash
-   pip install -r requirements.txt
-   python3 api.py
-   ```
-
-3. Start Next.js frontend:
+1. Install and start the Next.js application:
    ```bash
    cd frontend
    npm install
    npm run dev
    ```
 
-4. Open http://localhost:3000 in your browser
+2. Open http://localhost:3000 in your browser
 
-📖 **[See full documentation in ARCHITECTURE.md](ARCHITECTURE.md)**
+That's it! The application now uses Next.js API routes instead of a separate Python backend, making it much simpler to run and deploy.
 
 ---
 
 ## Features
 
-- **Modern Web Interface**: Next.js frontend with interactive Leaflet maps
-- **REST API**: Clean Flask API with GeoJSON support
+- **Modern Web Interface**: Next.js with interactive Leaflet maps
+- **Serverless Architecture**: Next.js API routes - no separate backend server needed!
+- **TypeScript**: Fully type-safe route finding algorithm
 - **Direct Route Finding**: Find all direct trains between two stations
 - **Multi-hop Route Search**: Intelligently find routes requiring train changes
 - **Timing Constraints**: Ensures waiting time at intermediate stations doesn't exceed 4 hours
 - **Interactive Maps**: Visualize routes on OpenStreetMap with color-coded markers
 - **Mobile Responsive**: Works on all devices
 - **No Paid Services**: Uses free OpenStreetMap tiles
+- **Easy Deployment**: Deploy to Vercel, Netlify, or any Next.js hosting platform
 
 ## Architecture
 
-### Modern Stack (Current)
-- **Frontend**: Next.js 14 (App Router) + TypeScript + Tailwind CSS
+### Current Stack
+- **Frontend**: Next.js 16 (App Router) + TypeScript + Tailwind CSS
+- **Backend**: Next.js API Routes (serverless functions)
+- **Route Finding**: TypeScript algorithm (ported from Python)
 - **Map**: Leaflet.js with OpenStreetMap tiles
-- **Backend**: Flask REST API with CORS
 - **Data Format**: GeoJSON for routes and stations
-
-### Legacy (Deprecated)
-- Old Flask app with Jinja templates: `app.py` (still available for reference)
+- **Data Storage**: Static JSON file bundled with the app
 
 ## Project Structure
 
 ```
 rail-way/
-├── api.py                          # Flask REST API (NEW)
-├── app.py                          # Legacy Flask app with templates
-├── route_finder.py                # Route finding algorithm
-├── train_timetables.json          # Train schedule data
-├── requirements.txt               # Python dependencies
-├── frontend/                      # Next.js application (NEW)
-│   ├── app/                      # App Router
-│   ├── components/               # React components
-│   ├── lib/                      # API client
+├── frontend/                       # Next.js application
+│   ├── app/                       # App Router
+│   │   ├── api/                  # API routes (serverless functions)
+│   │   │   ├── stations/        # GET /api/stations
+│   │   │   └── routes/find/     # POST /api/routes/find
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/                # React components
+│   │   └── Map.tsx
+│   ├── lib/                       # Core logic
+│   │   ├── routeFinder.ts        # Route finding algorithm (TypeScript)
+│   │   └── api.ts                # API client
+│   ├── public/
+│   │   └── train_timetables.json # Train schedule data
 │   └── package.json
-├── templates/                     # Legacy HTML templates
-├── static/                        # Legacy static files
-└── ARCHITECTURE.md               # Full documentation (NEW)
+├── legacy/                         # Legacy Python files (for reference)
+│   ├── api.py                     # Old Flask API
+│   ├── app.py                     # Old Flask web app
+│   ├── route_finder.py            # Original Python algorithm
+│   └── requirements.txt           # Python dependencies
+└── README.md
 ```
 
 ## Installation
@@ -79,57 +77,86 @@ git clone https://github.com/arbkm22/rail-way.git
 cd rail-way
 ```
 
-2. Install Python dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3. Install Node.js dependencies (for modern frontend):
+2. Install dependencies and start the application:
 ```bash
 cd frontend
 npm install
-cd ..
+npm run dev
 ```
+
+3. Open http://localhost:3000 in your browser
+
+## Deployment
+
+Deploy to Vercel (recommended for Next.js):
+
+```bash
+cd frontend
+vercel deploy
+```
+
+Or deploy to any other Next.js-compatible hosting platform like Netlify, Cloudflare Pages, or AWS Amplify.
 
 ## Usage
 
-### Modern Web Application (Recommended)
+### Web Application
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for complete instructions.
-
-**Quick start:**
+Start the development server:
 ```bash
-# Terminal 1: Start API
-python3 api.py
-
-# Terminal 2: Start Frontend  
-cd frontend && npm run dev
+cd frontend
+npm run dev
 ```
 
 Then open http://localhost:3000
 
-### Legacy Web Application
-
-Start the Flask web server with Jinja templates:
-
-```bash
-python3 app.py
-```
-
-Then open http://localhost:5000
-
-Then open your browser and navigate to:
-```
-http://localhost:5000
-```
-
 The web interface provides:
 - Easy-to-use dropdown menus for station selection
 - Advanced options for customizing search parameters
-- Beautiful visual display of route results
+- Beautiful visual display of route results with interactive maps
 - Support for both direct and multi-hop routes
 
-### Command-Line Interface
+### API Routes
+
+The application exposes the following API endpoints:
+
+#### GET /api/stations
+Returns a GeoJSON FeatureCollection of all available stations with coordinates.
+
+#### POST /api/routes/find
+Find routes between two stations.
+
+Request body:
+```json
+{
+  "from_station": "Mumbai CSMT",
+  "to_station": "Pune Junction",
+  "max_waiting_hours": 4,
+  "max_hops": 3
+}
+```
+
+Response:
+```json
+{
+  "from_station": "Mumbai CSMT",
+  "to_station": "Pune Junction",
+  "routes": [
+    {
+      "route_type": "direct",
+      "total_duration": "3h 15m",
+      "num_changes": 0,
+      "segments": [...],
+      "geometry": {...}
+    }
+  ]
+}
+```
+
+### Command-Line Interface (Legacy)
+
+> **Note**: The Python CLI is now legacy. The web application is the recommended way to use this tool.
+
+If you want to use the legacy Python CLI:
 
 Run the route finder application (either of these commands works):
 
@@ -182,16 +209,18 @@ Segment 1:
   Duration: 9h 0m
 ```
 
-### Extracting Timetable Data
+### Python Utility Scripts (Optional)
 
-#### Option 1: Use Sample Data (for testing)
+The repository includes some Python utility scripts that can be used for data extraction and testing:
 
-Generate sample timetable data:
-```bash
-python3 generate_sample_timetables.py
-```
+- `generate_sample_timetables.py` - Generate sample timetable data for testing
+- `extract_timetables.py` - Extract real timetable data from websites
+- `visualize_railway_map.py` - Create static map visualizations
+- `test_*.py` - Test scripts for the Python code
 
-This creates `train_timetables.json` with realistic sample data for testing the route finder.
+> **Note**: These scripts are optional and not required to run the main web application. The application comes with pre-generated timetable data.
+
+This creates `train_timetables.json` with realistic sample data for testing the route finder. The data is already included in `frontend/public/train_timetables.json`.
 
 #### Option 2: Extract Real Data from Website
 
